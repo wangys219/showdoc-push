@@ -1,0 +1,12 @@
+{
+  "name": "showdoc-push",
+  "version": "0.0.1",
+  "description": "showdoc tool",
+  "main": "bin/push.js",
+  "bin": {
+    "showdoc-push": "bin/push.js"
+  },
+  "author": "wangys219<wangys219@qq.com>",
+  "license": "MIT",
+  "private": false
+}
