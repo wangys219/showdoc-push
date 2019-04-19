@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 
 const CONFIG_NAME = '.showdocrc.json';
 let config;
@@ -44,7 +45,6 @@ function genConfig() {
  */
 function run() {
     // 获取配置
-    let config;
     try {
         config = require(path.resolve(CONFIG_NAME));
     } catch (e) {
@@ -88,7 +88,8 @@ function scan(dir) {
         let contentList = scanFile(fileList[i]);
         if (contentList) {
             for (let j = 0; j < contentList.length; j++) {
-                console.log(contentList[j]);
+                // 上传
+                pushAPI(contentList[j]);
             }
         }
     }
@@ -128,4 +129,22 @@ function scanFile(file) {
     }
 
     return result;
+}
+
+/**
+ * 上传API
+ */
+function pushAPI(content) {
+    let url = new URL(config.url);
+    let req = http.request({
+        method: 'POST',
+        hostname: url.hostname,
+        port: url.port,
+        path: `${url.pathname}?s=/api/open/fromComments`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        }, 
+    });
+    req.write(Buffer.from(`from=shell&api_key=${config.api_key}&api_token=${config.api_token}&content=${content}`));
+    req.end();
 }
