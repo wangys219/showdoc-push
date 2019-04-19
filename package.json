@@ -1,6 +1,6 @@
 {
   "name": "showdoc-push",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "showdoc tool",
   "main": "bin/push.js",
   "bin": {
