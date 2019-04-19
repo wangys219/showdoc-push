@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const utils = require('../lib/utils.js');
 
 const CONFIG_NAME = '.showdocrc.json';
 let config;
@@ -48,33 +49,37 @@ function run() {
     try {
         config = require(path.resolve(CONFIG_NAME));
     } catch (e) {
-        console.log(`缺少配置文件${path.resolve(CONFIG_NAME)}`); // todo: 需要一个输出提示的工具方法
-        process.exit();
+        utils.error(`缺少配置文件${path.resolve(CONFIG_NAME)}`);
+        process.exit(1);
     }
     
     // 配置检查
-    if (!config.url) console.log('缺少配置项url');
-    if (!config.api_key) config.log('缺少配置项api_url');
-    if (!config.api_token) config.log('缺少配置项api_token');
+    if (!config.url) {
+        utils.error('缺少配置项url');
+        process.exit(1);
+    }
+
+    if (!config.api_key) {
+        utils.error('缺少配置项api_url');
+        process.exit(1);
+    }
+
+    if (!config.api_token) {
+        utils.error('缺少配置项api_token');
+        process.exit(1);
+    }
 
     // todo: 添加指定扫描路径和忽略路径的功能
     // 根据配置扫描目录上传api
     scan(process.cwd());
-
-    // 根据配置扫描数据库上传数据字典
 }
 
 /**
  * 打印提示
  */
 function tip() {
-    console.log();
-    console.log('Usage:');
-    console.log();
-    console.log('    showdoc-push init   : 生成配置文件');
-    console.log('    showdoc-push        : 按照配置文件同步showdoc文档'); 
-    console.log();
-    console.log(); 
+    let usage = fs.readFileSync(path.resolve(__dirname, '../lib/usage.txt'), 'utf8');
+    utils.info(usage);
 }
 
 /**
@@ -87,12 +92,15 @@ function scan(dir) {
         // 扫描文件内容
         let contentList = scanFile(fileList[i]);
         if (contentList) {
+            // utils.infoPending(`正在上传文件${fileList[i]}`);
             for (let j = 0; j < contentList.length; j++) {
                 // 上传
                 pushAPI(contentList[j]);
             }
         }
     }
+    // 显示扫描完成
+    utils.infoPending();
 }
 
 /**
@@ -120,6 +128,7 @@ function getFileList(dir) {
  * 扫描文件内容
  */
 function scanFile(file) {
+    // utils.infoPending(`正在扫描文件${file}`);
     let content = fs.readFileSync(file, 'utf8');
     let list = content.match(/\/\*\*[\s\S]*?\*\//g);
     if (!list) return list;

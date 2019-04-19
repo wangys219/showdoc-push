@@ -1,0 +1,4 @@
+Usage:
+
+    showdoc-push       : 按照配置文件同步showdoc文档
+    showdoc-push init  : 生成配置文件

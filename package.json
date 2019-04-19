@@ -6,6 +6,10 @@
   "bin": {
     "showdoc-push": "bin/push.js"
   },
+  "repository": {
+      "type": "git",
+      "url": "git@github.com:wangys219/showdoc-push.git"
+  },
   "author": "wangys219<wangys219@qq.com>",
   "license": "MIT",
   "private": false
