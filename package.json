@@ -1,16 +1,22 @@
 {
   "name": "showdoc-push",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "showdoc tool",
   "main": "bin/push.js",
+  "scripts": {
+    "lint": "standard --fix"
+  },
   "bin": {
     "showdoc-push": "bin/push.js"
   },
   "repository": {
-      "type": "git",
-      "url": "git@github.com:wangys219/showdoc-push.git"
+    "type": "git",
+    "url": "git@github.com:wangys219/showdoc-push.git"
   },
   "author": "wangys219<wangys219@qq.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "devDependencies": {
+    "standard": "^13.1.0"
+  }
 }
